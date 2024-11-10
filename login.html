@@ -8,7 +8,103 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - The Numbers Academy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <!-- Copy your header from index.html -->
+    </header>
+    
+    <main>
+        <h1>Community</h1>
+        
+        <section id="comment-form">
+            <h2>Leave a Comment</h2>
+            <form id="commentForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="comment">Comment:</label>
+                <textarea id="comment" name="comment" required></textarea>
+                
+                <button type="submit">Submit Comment</button>
+            </form>
+        </section>
+        
+        <section id="comments">
+            <h2>Comments</h2>
+            <div id="commentList">
+                <!-- Comments will be dynamically added here -->
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <!-- Copy your footer from index.html -->
+    </footer>
+    
+    <script>
+        document.getElementById('commentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const comment = document.getElementById('comment').value;
+            
+            try {
+                const response = await fetch('/api/comments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, comment }),
+                });
+                
+                if (response.ok) {
+                    alert('Comment submitted successfully!');
+                    document.getElementById('commentForm').reset();
+                    fetchComments();
+                } else {
+                    alert('Failed to submit comment. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+        
+        async function fetchComments() {
+            try {
+                const response = await fetch('/api/comments');
+                const comments = await response.json();
+                const commentList = document.getElementById('commentList');
+                commentList.innerHTML = '';
+                comments.forEach(comment => {
+                    const commentElement = document.createElement('div');
+                    commentElement.className = 'comment';
+                    commentElement.innerHTML = `
+                        <h3>${comment.name}</h3>
+                        <p>${comment.comment}</p>
+                    `;
+                    commentList.appendChild(commentElement);
+                });
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        }
+        
+        fetchComments();
+    </script>
+</body>
+</html>
             <div class="logo">
                 <img src="logo.png" alt="Logo">
             </div>

@@ -109,4 +109,17 @@ INSERT INTO Courses (course_name, level, description) VALUES
 
 -- Rubik's Cube levels
 ('RubiksCube', '3x3', 'Standard Cube Solving'),
-('RubiksCube', '4x4', 'Advanced Cube Solving');
+('RubiksCube', '4x4', 'Advanced Cube Solving');Converted Text with Indian Units:
+Total Addressable Market (TAM):
+The global charitable giving market was valued at ₹35.31 lakh crore in 2020 and continues to grow as more individuals and corporations increase their charitable contributions. ImpactLink targets the global donation market, encompassing individual donors, foundations, and corporations. With a focus on transparent giving and donor engagement, ImpactLink is well-positioned to tap into this large and expanding market. By 2025, the global charitable market is projected to exceed ₹41 lakh crore, creating a significant opportunity for platforms that address transparency and impact tracking.
+
+Serviceable Available Market (SAM):
+The Serviceable Available Market (SAM) for ImpactLink consists of individual donors and small-to-medium charitable organizations within India, which account for approximately 30% of the overall charitable giving market. This segment could represent a market size of around ₹11-12 lakh crore. As the demand for donation transparency and impact tracking grows, ImpactLink is positioned to serve a niche market of tech-savvy, socially conscious donors and small charities looking to increase engagement.
+
+Serviceable Obtainable Market (SOM):
+The Serviceable Obtainable Market (SOM) for ImpactLink is the realistic share of the SAM that the platform expects to capture in the initial phases. By focusing on early adopters and leveraging strategic partnerships with a few key charitable organizations, ImpactLink aims to capture 1-3% of the SAM. This translates to a potential revenue opportunity of around ₹11,000-33,000 crore in India over the next few years. Through targeted marketing, pilot programs, and enhancing customer engagement, ImpactLink can gradually scale and increase its market share.
+
+Visual Representation:
+Largest Circle (TAM): Represents ₹35.31 lakh crore.
+Middle Circle (SAM): Represents ₹11-12 lakh crore.
+Smallest Circle (SOM): Represents ₹11,000-33,000 crore.

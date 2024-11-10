@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - The Numbers Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles specific to the community page */
+        .comment-section {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .comment-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .comment-form h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover {
+            background-color: #555;
+        }
+
+        .comments-list {
+            margin-top: 30px;
+        }
+
+        .comment {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .comment-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .comment-content {
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="logo.png" alt="Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Community.html">Community</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                <li><a href="Student_Login.html">Student Login</a></li>
+            </ul>
+            <div class="auth-links">
+                <a href="login.html" class="sign-in">Sign in</a>
+                <a href="register.html" class="register">Register</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="comment-section">
+            <div class="comment-form">
+                <h2>Share Your Thoughts</h2>
+                <form id="commentForm">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        <textarea id="comment" name="comment" required></textarea>
+                        <div class="error-message" id="commentError"></div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit Comment</button>
+                </form>
+            </div>
+
+            <div class="comments-list" id="commentsList">
+                <!-- Comments will be dynamically inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="logo.png" alt="Logo">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const commentForm = document.getElementById('commentForm');
+            const commentsList = document.getElementById('commentsList');
+
+            // Load existing comments when page loads
+            loadComments();
+
+            // Handle form submission
+            commentForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    comment: document.getElementById('comment').value
+                };
+
+                try {
+                    const response = await fetch('http://localhost:5000/api/comments', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok) {
+                        // Clear form
+                        commentForm.reset();
+                        // Reload comments
+                        loadComments();
+                        alert('Comment submitted successfully!');
+                    } else {
+                        throw new Error('Failed to submit comment');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to submit comment. Please try again.');
+                }
+            });
+
+            // Function to load comments
+            async function loadComments() {
+                try {
+                    const response = await fetch('http://localhost:5000/api/comments');
+                    const comments = await response.json();
+                    
+                    // Clear existing comments
+                    commentsList.innerHTML = '';
+
+                    // Add comments to the page
+                    comments.forEach(comment => {
+                        const commentElement = createCommentElement(comment);
+                        commentsList.appendChild(commentElement);
+                    });
+                } catch (error) {
+                    console.error('Error loading comments:', error);
+                    commentsList.innerHTML = '<p>Failed to load comments. Please try again later.</p>';
+                }
+            }
+
+            // Function to create comment HTML element
+            function createCommentElement(comment) {
+                const div = document.createElement('div');
+                div.className = 'comment';
+                div.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(comment.name)}</span>
+                        <span class="comment-date">${comment.timestamp}</span>
+                    </div>
+                    <div class="comment-content">
+                        ${escapeHtml(comment.comment)}
+                    </div>
+                `;
+                return div;
+            }
+
+            // Helper function to escape HTML and prevent XSS
+            function escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+        });
+    </script>
+</body>
